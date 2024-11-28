@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
-import { createProduct, getAllProduct, updateProduct } from '../controller/product.controller';
+import { createProduct, deleteProduct, getAllProduct, updateProduct } from '../controller/product.controller';
 const router:Router=Router();
 
 router.post('/',
@@ -19,6 +19,18 @@ router.post('/updateProduct',
     basicAuthUser,
     checkRequestBodyParams('_id'),
     updateProduct
+);
+
+router.post('/getsingleproduct',
+    basicAuthUser,
+    checkRequestBodyParams('_id'),
+    updateProduct
+);
+
+router.post('/deleteproduct',
+    basicAuthUser,
+    checkRequestBodyParams('_id'),
+    deleteProduct
 );
 
 

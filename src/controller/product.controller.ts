@@ -106,3 +106,44 @@ export let updateProduct = async (req, res, next) => {
 }
 
 
+/**
+ * 
+ * @author Kaaviyan G S
+ * @date 27-11-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to get single User.
+ */
+export let getSingleProduct = async (req, res, next) => {
+    try {
+        const single = await Product.findOne({$and:[{isDeleted:false},{ _id: req.body._id }] })
+        if (single) {
+            response(req, res, activity, 'Level-2', 'Get-User', true, 200, single, clientError.success.fetchedSuccessfully);
+        } else {
+            response(req, res, activity, 'Level-3', 'Get-User', true, 422, {}, clientError.user.userDontExist);
+        }
+    } catch (err) {
+        response(req, res, activity, 'Level-3', 'Get-User', false, 500, {}, errorMessage.internalServer, err.message);
+    } 
+}
+
+
+/**
+ * @author Kaaviyan G S
+ * @date 27-11-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to delete Product.
+ */
+export let deleteProduct = async (req, res, next) => {
+    try {
+        const deleteData = await Product.findByIdAndUpdate({ _id: req.body._id }, { $set: { isDeleted: true } });
+        response(req, res, activity, 'Level-2', 'Delete-User', true, 200, deleteData, clientError.success.deleteSuccess);
+    } catch (err) {
+        response(req, res, activity, 'Level-3', 'Delete-User', false, 500, {}, errorMessage.internalServer, err.message);
+    }
+}
+
+
